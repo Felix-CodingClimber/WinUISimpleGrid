@@ -1,5 +1,5 @@
 # WinUISimpleGrid
-Basic DataGrid control for WinUI 3. Fewer features than other controls, but much more understandable for simple Scenarios or Beginners.
+Basic DataGrid control for WinUI 3. Fewer features than other controls, but much more understandable for simple scenarios or Beginners.
 Important! There will be no direct editing support. The projects where I will use the DataGrid enable editing of the data only with custom item editing dialogs, so there is no need for me to implement editing directly in the DataGrid. This is one reason the controls logic can be kept relatively simple.
 
 ### Work in Progress!
