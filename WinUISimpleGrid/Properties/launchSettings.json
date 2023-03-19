@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "CustomDataGrid2 (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "CustomDataGrid2 (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

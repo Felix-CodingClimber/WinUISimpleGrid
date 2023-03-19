@@ -1,0 +1,25 @@
+<UserControl
+    x:Class="WinUISimpleGrid.DataGrid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:WinUISimpleGrid"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="DataGridControl"
+    mc:Ignorable="d">
+
+    <Grid x:Name="RootGrid">
+        <ScrollViewer>
+            <local:DataGridRowsView
+                x:Name="RowsListView"
+                DataGrid="{x:Bind}"
+                ItemsSource="{x:Bind ItemsSource}">
+                <local:DataGridRowsView.ItemTemplate>
+                    <DataTemplate x:DataType="local:ExampleDataItem">
+                        <local:DataGridRow Item="{x:Bind}" ParentDataGrid="{Binding Path=DataGrid, ElementName=RowsListView}" />
+                    </DataTemplate>
+                </local:DataGridRowsView.ItemTemplate>
+            </local:DataGridRowsView>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
