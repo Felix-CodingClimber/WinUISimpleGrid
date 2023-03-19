@@ -1,4 +1,5 @@
 <ResourceDictionary
+    x:Class="WinUISimpleGrid.Generic"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WinUISimpleGrid">
@@ -29,6 +30,72 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <TextBlock Text="{TemplateBinding Text}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:DataGrid">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:DataGrid">
+                    <Grid x:Name="RootGrid" DataContext="{TemplateBinding Self}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ContentControl x:Name="HeaderGrid" Grid.Row="0">
+                            <local:DataGridHeader x:Name="Header" ParentDataGrid="{TemplateBinding Self}" />
+                        </ContentControl>
+                        <Grid x:Name="ContentGrid" Grid.Row="1">
+                            <ScrollViewer>
+                                <local:DataGridRowsView x:Name="Content" ItemsSource="{TemplateBinding ItemsSource}">
+                                    <local:DataGridRowsView.ItemTemplate>
+                                        <DataTemplate x:DataType="local:ExampleDataItem">
+                                            <local:DataGridRow Item="{x:Bind}" ParentDataGrid="{Binding Path=DataContext, ElementName=RootGrid}" />
+                                        </DataTemplate>
+                                    </local:DataGridRowsView.ItemTemplate>
+                                </local:DataGridRowsView>
+                            </ScrollViewer>
+                        </Grid>
+                        <Grid x:Name="FooterGrid" Grid.Row="2" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:DataGridHeader">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:DataGridHeader">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentControl>
+                            <Grid x:Name="HeaderCellGrid" />
+                        </ContentControl>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:DataGridHeaderCell">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:DataGridHeaderCell">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Text="{TemplateBinding Title}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

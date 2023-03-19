@@ -5,8 +5,20 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace WinUISimpleGrid;
 
-public sealed partial class DataGrid : UserControl
+
+[TemplatePart(Name = nameof(Content), Type = typeof(DataGridRowsView))]
+[TemplatePart(Name = nameof(Header), Type = typeof(DataGridHeader))]
+public sealed class DataGrid : Control
 {
+    public static readonly DependencyProperty SelfProperty =
+    DependencyProperty.Register(nameof(Self), typeof(DataGrid), typeof(DataGrid), new PropertyMetadata(null));
+
+    public DataGrid Self
+    {
+        get { return (DataGrid)GetValue(SelfProperty); }
+        set { SetValue(SelfProperty, value); }
+    }
+
     public static readonly DependencyProperty ColumnsProperty =
         DependencyProperty.Register(nameof(ColumnDefinitions), typeof(List<DataGridColumnDefinition>), typeof(DataGrid), new PropertyMetadata(new List<DataGridColumnDefinition>()));
 
@@ -25,8 +37,20 @@ public sealed partial class DataGrid : UserControl
         set { SetValue(ItemsSourceProperty, value); }
     }
 
+    public DataGridHeader Header { get; private set; }
+    public DataGridRowsView Content { get; private set; }
+
     public DataGrid()
     {
-        this.InitializeComponent();
+        Self = this;
+
+        this.DefaultStyleKey = typeof(DataGrid);
+    }
+
+    protected override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        Header = GetTemplateChild(nameof(Header)) as DataGridHeader;
+        Content = GetTemplateChild(nameof(Content)) as DataGridRowsView;
     }
 }

@@ -8,8 +8,6 @@ namespace WinUISimpleGrid;
 [TemplatePart(Name = nameof(CellGrid), Type = typeof(Grid))]
 public sealed class DataGridRow : Control
 {
-    public Grid CellGrid { get; private set; }
-
     public static readonly DependencyProperty ItemProperty =
         DependencyProperty.Register(nameof(Item), typeof(object), typeof(DataGridRow), new PropertyMetadata(null));
 
@@ -28,6 +26,8 @@ public sealed class DataGridRow : Control
         get { return (DataGrid)GetValue(ParentDataGridProperty); }
         set { SetValue(ParentDataGridProperty, value); }
     }
+
+    public Grid CellGrid { get; private set; }
 
     public DataGridRow()
     {

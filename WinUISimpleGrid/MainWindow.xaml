@@ -14,9 +14,9 @@
         </Grid.ColumnDefinitions>
         <local:DataGrid ItemsSource="{x:Bind exampleItems}">
             <local:DataGrid.ColumnDefinitions>
-                <local:DataGridColumnDefinition PropertyName="Name" />
-                <local:DataGridColumnDefinition PropertyName="Surname" />
-                <local:DataGridColumnDefinition PropertyName="Age" />
+                <local:DataGridColumnDefinition Title="Name" PropertyName="Name" />
+                <local:DataGridColumnDefinition Title="Nachname" PropertyName="Surname" />
+                <local:DataGridColumnDefinition Title="Alter" PropertyName="Age" />
             </local:DataGrid.ColumnDefinitions>
         </local:DataGrid>
     </Grid>
