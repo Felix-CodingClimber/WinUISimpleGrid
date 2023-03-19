@@ -1,9 +1,13 @@
 {
   "profiles": {
-    "CustomDataGrid2 (Package)": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "WinUISimpleGrid (Package)": {
       "commandName": "MsixPackage"
     },
-    "CustomDataGrid2 (Unpackaged)": {
+    "WinUISimpleGrid (Unpackaged)": {
       "commandName": "Project"
     }
   }

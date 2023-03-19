@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomDataGrid2", "CustomDataGrid2\CustomDataGrid2.csproj", "{310D6679-7F24-432B-88A7-15863FAA52D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinUISimpleGrid", "WinUISimpleGrid\WinUISimpleGrid.csproj", "{310D6679-7F24-432B-88A7-15863FAA52D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
