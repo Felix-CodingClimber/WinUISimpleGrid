@@ -11,7 +11,7 @@ namespace WinUISimpleGrid;
 public sealed class DataGrid : Control
 {
     public static readonly DependencyProperty SelfProperty =
-    DependencyProperty.Register(nameof(Self), typeof(DataGrid), typeof(DataGrid), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(Self), typeof(DataGrid), typeof(DataGrid), new PropertyMetadata(null));
 
     public DataGrid Self
     {
@@ -37,11 +37,17 @@ public sealed class DataGrid : Control
         set { SetValue(ItemsSourceProperty, value); }
     }
 
+    public int CurrentPage { get; set; }
+
+    public int PagesTotal { get; set; }
+
     public DataGridHeader Header { get; private set; }
     public DataGridRowsView Content { get; private set; }
 
     public DataGrid()
     {
+        CurrentPage = 1;
+        PagesTotal = 10;
         Self = this;
 
         this.DefaultStyleKey = typeof(DataGrid);
@@ -52,5 +58,7 @@ public sealed class DataGrid : Control
         base.OnApplyTemplate();
         Header = GetTemplateChild(nameof(Header)) as DataGridHeader;
         Content = GetTemplateChild(nameof(Content)) as DataGridRowsView;
+
+
     }
 }

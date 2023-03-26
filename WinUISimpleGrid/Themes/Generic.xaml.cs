@@ -1,6 +1,8 @@
-﻿namespace WinUISimpleGrid;
+﻿using Microsoft.UI.Xaml;
 
-public partial class Generic
+namespace WinUISimpleGrid;
+
+public partial class Generic : ResourceDictionary
 {
     public Generic()
     {

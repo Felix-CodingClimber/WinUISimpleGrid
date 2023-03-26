@@ -75,7 +75,7 @@ public sealed partial class MainWindow : Window
 
         Random random = new Random();
         int index = 0;
-        for (int i = 0; i < 150; i++)
+        for (int i = 0; i < 20; i++)
         {
             ExampleDataItem item = new ExampleDataItem()
             {

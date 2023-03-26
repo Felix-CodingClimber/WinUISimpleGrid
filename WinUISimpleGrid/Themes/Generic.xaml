@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WinUISimpleGrid">
 
-    <Style TargetType="local:DataGridRow">
+    <Style BasedOn="{StaticResource DefaultDataGridRowStyle}" TargetType="local:DataGridRow" />
+    <Style x:Name="DefaultDataGridRowStyle" TargetType="local:DataGridRow">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:DataGridRow">
@@ -21,7 +22,8 @@
         </Setter>
     </Style>
 
-    <Style TargetType="local:DataGridTextCell">
+    <Style BasedOn="{StaticResource DefaultDataGridTextCellStyle}" TargetType="local:DataGridTextCell" />
+    <Style x:Name="DefaultDataGridTextCellStyle" TargetType="local:DataGridTextCell">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:DataGridTextCell">
@@ -36,7 +38,8 @@
         </Setter>
     </Style>
 
-    <Style TargetType="local:DataGrid">
+    <Style BasedOn="{StaticResource DefaultDataGridStyle}" TargetType="local:DataGrid" />
+    <Style x:Name="DefaultDataGridStyle" TargetType="local:DataGrid">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:DataGrid">
@@ -60,14 +63,17 @@
                                 </local:DataGridRowsView>
                             </ScrollViewer>
                         </Grid>
-                        <Grid x:Name="FooterGrid" Grid.Row="2" />
+                        <Grid x:Name="FooterGrid" Grid.Row="2">
+                            <local:PaginationControl NumberOfPages="12" NumberOfSelectablePages="5" />
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style TargetType="local:DataGridHeader">
+    <Style BasedOn="{StaticResource DefaultDataGridHeaderStyle}" TargetType="local:DataGridHeader" />
+    <Style x:Name="DefaultDataGridHeaderStyle" TargetType="local:DataGridHeader">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:DataGridHeader">
@@ -84,7 +90,8 @@
         </Setter>
     </Style>
 
-    <Style TargetType="local:DataGridHeaderCell">
+    <Style BasedOn="{StaticResource DefaultDataGridHeaderCellStyle}" TargetType="local:DataGridHeaderCell" />
+    <Style x:Name="DefaultDataGridHeaderCellStyle" TargetType="local:DataGridHeaderCell">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:DataGridHeaderCell">
@@ -100,5 +107,260 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource DefaultToolbarButtonStyle}" TargetType="local:ToolbarButton" />
+    <Style
+        x:Name="DefaultToolbarButtonStyle"
+        BasedOn="{StaticResource DefaultButtonStyle}"
+        TargetType="local:ToolbarButton">
+        <Setter Property="Background" Value="{ThemeResource AppBarButtonBackground}" />
+        <Setter Property="Foreground" Value="{ThemeResource AppBarButtonForeground}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource AppBarButtonBorderBrush}" />
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+        <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}" />
+        <Setter Property="FocusVisualMargin" Value="-3" />
+        <Setter Property="AllowFocusOnInteraction" Value="False" />
+        <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="BackgroundSizing" Value="InnerBorderEdge" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ToolbarButton">
+                    <Grid x:Name="Root" Background="Transparent">
+                        <Border
+                            x:Name="AppBarButtonInnerBorder"
+                            Background="{TemplateBinding Background}"
+                            BackgroundSizing="{TemplateBinding BackgroundSizing}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Control.IsTemplateFocusTarget="True"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <Border.BackgroundTransition>
+                                <BrushTransition Duration="0:0:0.083" />
+                            </Border.BackgroundTransition>
+                        </Border>
+                        <Grid x:Name="ContentRoot" Margin="{TemplateBinding Padding}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Viewbox
+                                x:Name="ContentViewbox"
+                                Grid.Column="0"
+                                Height="{TemplateBinding IconSize}"
+                                VerticalAlignment="Center">
+                                <SymbolIcon
+                                    x:Name="Content"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Symbol="{TemplateBinding Icon}" />
+                            </Viewbox>
+                            <TextBlock
+                                x:Name="TextLabel"
+                                Grid.Column="1"
+                                Padding="10,0,0,0"
+                                VerticalAlignment="Center"
+                                FontFamily="{TemplateBinding FontFamily}"
+                                FontSize="{TemplateBinding FontSize}"
+                                Foreground="{TemplateBinding Foreground}"
+                                Text="{TemplateBinding Text}" />
+                        </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="AppBarButtonInnerBorder.Background" Value="{ThemeResource AppBarButtonBackgroundPointerOver}" />
+                                        <Setter Target="AppBarButtonInnerBorder.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushPointerOver}" />
+                                        <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundPointerOver}" />
+                                        <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPointerOver}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="AppBarButtonInnerBorder.Background" Value="{ThemeResource AppBarButtonBackgroundPressed}" />
+                                        <Setter Target="AppBarButtonInnerBorder.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushPressed}" />
+                                        <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundPressed}" />
+                                        <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundPressed}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="AppBarButtonInnerBorder.Background" Value="{ThemeResource AppBarButtonBackgroundDisabled}" />
+                                        <Setter Target="AppBarButtonInnerBorder.BorderBrush" Value="{ThemeResource AppBarButtonBorderBrushDisabled}" />
+                                        <Setter Target="Content.Foreground" Value="{ThemeResource AppBarButtonForegroundDisabled}" />
+                                        <Setter Target="TextLabel.Foreground" Value="{ThemeResource AppBarButtonForegroundDisabled}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ContentStates">
+                                <VisualState x:Name="NormalContent" />
+
+                                <VisualState x:Name="TextOnlyContent">
+                                    <VisualState.Setters>
+                                        <Setter Target="TextLabel.Padding" Value="0" />
+                                        <Setter Target="TextLabel.HorizontalTextAlignment" Value="Center" />
+                                        <Setter Target="TextLabel.HorizontalAlignment" Value="Center" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="IconOnlyContent">
+                                    <VisualState.Setters>
+                                        <Setter Target="TextLabel.Padding" Value="0" />
+                                        <Setter Target="ContentViewbox.HorizontalAlignment" Value="Center" />
+                                        <Setter Target="ContentViewbox.(Grid.Column)" Value="1" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource DefaultPaginationControlStyle}" TargetType="local:PaginationControl" />
+    <Style x:Name="DefaultPaginationControlStyle" TargetType="local:PaginationControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:PaginationControl">
+                    <Grid
+                        x:Name="RootGrid"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid x:Name="Content">
+                            <StackPanel Orientation="Horizontal">
+                                <local:ToolbarButton
+                                    x:Name="FirstPageButton"
+                                    Icon="Previous"
+                                    Style="{StaticResource DefaultPaginationButtonStyle}"
+                                    ToolTipService.ToolTip="Erste Seite" />
+                                <local:ToolbarButton
+                                    x:Name="BackButton"
+                                    Icon="Back"
+                                    Style="{StaticResource DefaultPaginationButtonStyle}"
+                                    ToolTipService.ToolTip="Seite zurück" />
+                                <local:ToolbarButton
+                                    x:Name="GoToPageDownButton"
+                                    Style="{StaticResource DefaultPaginationButtonStyle}"
+                                    Text="..."
+                                    ToolTipService.ToolTip="Seite auswählen" />
+                                <ItemsControl x:Name="PageSelectionPanel" ItemsSource="{TemplateBinding SelectablePages}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsStackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="local:SelectablePage">
+                                            <local:ToolbarButton
+                                                Command="{Binding PageButtonClickCommand}"
+                                                CommandParameter="{Binding PageIndex}"
+                                                Foreground="{Binding Foreground}"
+                                                Style="{StaticResource DefaultPaginationButtonStyle}"
+                                                Text="{Binding PageIndex}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <local:ToolbarButton
+                                    x:Name="GoToPageUpButton"
+                                    Style="{StaticResource DefaultPaginationButtonStyle}"
+                                    Text="..."
+                                    ToolTipService.ToolTip="Seite auswählen" />
+                                <local:ToolbarButton
+                                    x:Name="ForwardButton"
+                                    Icon="Forward"
+                                    Style="{StaticResource DefaultPaginationButtonStyle}"
+                                    ToolTipService.ToolTip="Seite vor" />
+                                <TextBlock Text="{TemplateBinding SelectedPage}" />
+                                <local:ToolbarButton
+                                    x:Name="LastPageButton"
+                                    Icon="Next"
+                                    Style="{StaticResource DefaultPaginationButtonStyle}"
+                                    ToolTipService.ToolTip="Letzte Seite" />
+                            </StackPanel>
+                        </Grid>
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="NavigateDownStates">
+                                <VisualState x:Name="DefaultDown" />
+
+                                <VisualState x:Name="CanNotGoDown">
+                                    <VisualState.Setters>
+                                        <Setter Target="FirstPageButton.IsEnabled" Value="False" />
+                                        <Setter Target="BackButton.IsEnabled" Value="False" />
+                                        <Setter Target="GoToPageDownButton.IsEnabled" Value="False" />
+                                        <Setter Target="GoToPageDownButton.Opacity" Value="0" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="CanGoDown">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackButton.IsEnabled" Value="True" />
+                                        <Setter Target="GoToPageDownButton.IsEnabled" Value="False" />
+                                        <Setter Target="GoToPageDownButton.Opacity" Value="0" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="HasMorePagesDown">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackButton.IsEnabled" Value="True" />
+                                        <Setter Target="GoToPageDownButton.IsEnabled" Value="True" />
+                                        <Setter Target="GoToPageDownButton.Opacity" Value="1" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+
+                            <VisualStateGroup x:Name="NavigateUpStates">
+                                <VisualState x:Name="DefaultUp" />
+
+                                <VisualState x:Name="CanNotGoUp">
+                                    <VisualState.Setters>
+                                        <Setter Target="LastPageButton.IsEnabled" Value="False" />
+                                        <Setter Target="ForwardButton.IsEnabled" Value="False" />
+                                        <Setter Target="GoToPageUpButton.IsEnabled" Value="False" />
+                                        <Setter Target="GoToPageUpButton.Opacity" Value="0" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="CanGoUp">
+                                    <VisualState.Setters>
+                                        <Setter Target="ForwardButton.IsEnabled" Value="True" />
+                                        <Setter Target="GoToPageUpButton.IsEnabled" Value="False" />
+                                        <Setter Target="GoToPageUpButton.Opacity" Value="0" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="HasMorePagesUp">
+                                    <VisualState.Setters>
+                                        <Setter Target="ForwardButton.IsEnabled" Value="True" />
+                                        <Setter Target="GoToPageUpButton.IsEnabled" Value="True" />
+                                        <Setter Target="GoToPageUpButton.Opacity" Value="1" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style
+        x:Key="DefaultPaginationButtonStyle"
+        BasedOn="{StaticResource DefaultToolbarButtonStyle}"
+        TargetType="local:ToolbarButton">
+        <Setter Property="IconSize" Value="14" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="Width" Value="40" />
     </Style>
 </ResourceDictionary>
