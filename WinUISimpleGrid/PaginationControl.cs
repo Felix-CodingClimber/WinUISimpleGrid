@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Windows.UI;
 
 namespace WinUISimpleGrid;
 
 [TemplatePart(Name = nameof(BackButton), Type = typeof(ToolbarButton))]
 [TemplatePart(Name = nameof(FirstPageButton), Type = typeof(ToolbarButton))]
-[TemplatePart(Name = nameof(GoToPageDownButton), Type = typeof(ToolbarButton))]
-[TemplatePart(Name = nameof(GoToPageUpButton), Type = typeof(ToolbarButton))]
 [TemplatePart(Name = nameof(LastPageButton), Type = typeof(ToolbarButton))]
 [TemplatePart(Name = nameof(ForwardButton), Type = typeof(ToolbarButton))]
 [TemplatePart(Name = nameof(Root), Type = typeof(Grid))]
+[TemplatePart(Name = nameof(GoToPageDownFlyout), Type = typeof(Flyout))]
+[TemplatePart(Name = nameof(GoToPageUpFlyout), Type = typeof(Flyout))]
 public sealed class PaginationControl : Control
 {
     public event EventHandler<SelectedPageChangedEventArgs> SelectedPageChanged;
@@ -85,13 +83,15 @@ public sealed class PaginationControl : Control
         set { SetValue(SelectablePagesProperty, value); }
     }
 
+    public IRelayCommand<double> GoToPageButtonClickCommand { get; private set; }
+
     public ToolbarButton BackButton { get; private set; }
     public ToolbarButton FirstPageButton { get; private set; }
-    public ToolbarButton GoToPageDownButton { get; private set; }
-    public ToolbarButton GoToPageUpButton { get; private set; }
     public ToolbarButton LastPageButton { get; private set; }
     public ToolbarButton ForwardButton { get; private set; }
     public Grid Root { get; private set; }
+    public Flyout GoToPageUpFlyout { get; private set; }
+    public Flyout GoToPageDownFlyout { get; private set; }
 
     public VisualStateManager manager;
 
@@ -101,9 +101,16 @@ public sealed class PaginationControl : Control
 
     public PaginationControl()
     {
-        PageForegroundDefaultColor = (SolidColorBrush)Application.Current.Resources["TextFillColorPrimaryBrush"];
-
         this.DefaultStyleKey = typeof(PaginationControl);
+        this.DataContext = this;
+
+        PageForegroundDefaultColor = (SolidColorBrush)Application.Current.Resources["TextFillColorPrimaryBrush"];
+        GoToPageButtonClickCommand = new RelayCommand<double>((value) =>
+        {
+            GoToPage((int)value);
+            GoToPageDownFlyout.Hide();
+            GoToPageUpFlyout.Hide();
+        });
     }
 
     protected override void OnApplyTemplate()
@@ -114,16 +121,14 @@ public sealed class PaginationControl : Control
         BackButton.Click += BackButton_Click;
         FirstPageButton = GetTemplateChild(nameof(FirstPageButton)) as ToolbarButton;
         FirstPageButton.Click += FirstPageButton_Click;
-        GoToPageDownButton = GetTemplateChild(nameof(GoToPageDownButton)) as ToolbarButton;
-        GoToPageDownButton.Click += GoToPageDownButton_Click;
-        GoToPageUpButton = GetTemplateChild(nameof(GoToPageUpButton)) as ToolbarButton;
-        GoToPageUpButton.Click += GoToPageUpButton_Click;
         LastPageButton = GetTemplateChild(nameof(LastPageButton)) as ToolbarButton;
         LastPageButton.Click += LastPageButton_Click;
         ForwardButton = GetTemplateChild(nameof(ForwardButton)) as ToolbarButton;
         ForwardButton.Click += ForwardButton_Click;
 
         Root = GetTemplateChild(nameof(Root)) as Grid;
+        GoToPageDownFlyout = GetTemplateChild(nameof(GoToPageDownFlyout)) as Flyout;
+        GoToPageUpFlyout = GetTemplateChild(nameof(GoToPageUpFlyout)) as Flyout;
 
         InitSelectablePages();
         SelectedPage = 1;
@@ -139,16 +144,6 @@ public sealed class PaginationControl : Control
         SelectedPage = NumberOfPages;
     }
 
-    private void GoToPageUpButton_Click(object sender, RoutedEventArgs e)
-    {
-        // todo show page selection flyout
-    }
-
-    private void GoToPageDownButton_Click(object sender, RoutedEventArgs e)
-    {
-        // todo show page selection flyout
-    }
-
     private void FirstPageButton_Click(object sender, RoutedEventArgs e)
     {
         SelectedPage = 1;
@@ -159,7 +154,7 @@ public sealed class PaginationControl : Control
         SelectedPage--;
     }
 
-    private void PageButton_Click(int pageIndex)
+    private void GoToPage(int pageIndex)
     {
         SelectedPage = pageIndex;
     }
@@ -170,7 +165,7 @@ public sealed class PaginationControl : Control
 
         SelectablePages = new List<SelectablePage>();
         for (int i = 1; i <= numSelectablePages; i++)
-            SelectablePages.Add(new SelectablePage(i) { Foreground = PageForegroundDefaultColor, PageButtonClickCommand = new RelayCommand<int>(PageButton_Click) });
+            SelectablePages.Add(new SelectablePage(i) { Foreground = PageForegroundDefaultColor, PageButtonClickCommand = new RelayCommand<int>(GoToPage) });
     }
 
     private void UpdateSelectablePages()
@@ -214,7 +209,6 @@ public sealed class PaginationControl : Control
         {
             bool test = VisualStateManager.GoToState(this, "HasMorePagesUp", false);
         }
-
     }
 
     private void ResetSetSelectedPage()

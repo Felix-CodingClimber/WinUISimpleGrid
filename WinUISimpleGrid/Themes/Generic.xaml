@@ -253,7 +253,20 @@
                                     x:Name="GoToPageDownButton"
                                     Style="{StaticResource DefaultPaginationButtonStyle}"
                                     Text="..."
-                                    ToolTipService.ToolTip="Seite auswählen" />
+                                    AllowFocusOnInteraction="True"
+                                    ToolTipService.ToolTip="Seite auswählen">
+                                    <Button.Flyout>
+                                        <Flyout x:Name="GoToPageDownFlyout">
+                                            <StackPanel>
+                                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Enter Page Number" Margin="0,0,0,10" />
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                    <NumberBox x:Name="GoToPageDownInput" Minimum="1" Maximum="{Binding SelectablePages[0].PageIndex}" />
+                                                    <Button Command="{Binding GoToPageButtonClickCommand}" CommandParameter="{Binding Path=Value, ElementName=GoToPageDownInput}" Content="Go" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </local:ToolbarButton>
                                 <ItemsControl x:Name="PageSelectionPanel" ItemsSource="{TemplateBinding SelectablePages}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -275,7 +288,20 @@
                                     x:Name="GoToPageUpButton"
                                     Style="{StaticResource DefaultPaginationButtonStyle}"
                                     Text="..."
-                                    ToolTipService.ToolTip="Seite auswählen" />
+                                    AllowFocusOnInteraction="True"
+                                    ToolTipService.ToolTip="Seite auswählen">
+                                    <Button.Flyout>
+                                        <Flyout x:Name="GoToPageUpFlyout">
+                                            <StackPanel>
+                                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Enter Page Number" Margin="0,0,0,10" />
+                                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                                    <NumberBox x:Name="GoToPageUpInput" Minimum="{Binding SelectablePages[^1].PageIndex}" Maximum="{Binding NumberOfPages}" />
+                                                    <Button Command="{Binding GoToPageButtonClickCommand}" CommandParameter="{Binding Path=Value, ElementName=GoToPageUpInput}" Content="Go" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </local:ToolbarButton>
                                 <local:ToolbarButton
                                     x:Name="ForwardButton"
                                     Icon="Forward"
