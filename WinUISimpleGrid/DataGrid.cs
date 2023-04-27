@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.UI.Xaml;
@@ -8,6 +9,7 @@ namespace WinUISimpleGrid;
 
 [TemplatePart(Name = nameof(Content), Type = typeof(DataGridRowsView))]
 [TemplatePart(Name = nameof(Header), Type = typeof(DataGridHeader))]
+[TemplatePart(Name = nameof(Pagination), Type = typeof(PaginationControl))]
 public sealed class DataGrid : Control
 {
     public static readonly DependencyProperty SelfProperty =
@@ -29,7 +31,13 @@ public sealed class DataGrid : Control
     }
 
     public static readonly DependencyProperty ItemsSourceProperty =
-        DependencyProperty.Register(nameof(ItemsSource), typeof(IList), typeof(DataGrid), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(ItemsSource), typeof(IList), typeof(DataGrid), new PropertyMetadata(null, OnItemsSourcePropertyChanged));
+
+    private static void OnItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        DataGrid self = (DataGrid)d;
+        self.UpdatePagination();
+    }
 
     public IList ItemsSource
     {
@@ -37,17 +45,38 @@ public sealed class DataGrid : Control
         set { SetValue(ItemsSourceProperty, value); }
     }
 
-    public int CurrentPage { get; set; }
+    public static readonly DependencyProperty ItemsPerPageProperty =
+        DependencyProperty.Register(nameof(ItemsPerPage), typeof(int), typeof(DataGrid), new PropertyMetadata(50, OnItemsPerPagePropertyChanged));
 
-    public int PagesTotal { get; set; }
+    private static void OnItemsPerPagePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        DataGrid self = (DataGrid)d;
+        self.UpdatePagination();
+    }
+
+    public int ItemsPerPage
+    {
+        get { return (int)GetValue(ItemsPerPageProperty); }
+        set { SetValue(ItemsPerPageProperty, value); }
+    }
+
+    public static readonly DependencyProperty ShownItemsProperty =
+        DependencyProperty.Register(nameof(ShownItems), typeof(IList), typeof(DataGrid), new PropertyMetadata(null));
+
+    public IList ShownItems
+    {
+        get { return (IList)GetValue(ShownItemsProperty); }
+        set { SetValue(ShownItemsProperty, value); }
+    }
+
+    public int CurrentPage { get; set; }
 
     public DataGridHeader Header { get; private set; }
     public DataGridRowsView Content { get; private set; }
+    public PaginationControl Pagination { get; private set; }
 
     public DataGrid()
     {
-        CurrentPage = 1;
-        PagesTotal = 10;
         Self = this;
 
         this.DefaultStyleKey = typeof(DataGrid);
@@ -58,7 +87,31 @@ public sealed class DataGrid : Control
         base.OnApplyTemplate();
         Header = GetTemplateChild(nameof(Header)) as DataGridHeader;
         Content = GetTemplateChild(nameof(Content)) as DataGridRowsView;
+        Pagination = GetTemplateChild(nameof(Pagination)) as PaginationControl;
 
+        UpdatePagination();
+        Pagination.SelectedPageChanged += Pagination_SelectedPageChanged;
+    }
 
+    private void UpdatePagination()
+    {
+        if (Pagination is null)
+            return;
+
+        Pagination.NumberOfPages = (int)Math.Ceiling((double)ItemsSource.Count / ItemsPerPage);
+    }
+
+    private void Pagination_SelectedPageChanged(object sender, SelectedPageChangedEventArgs e)
+    {
+        List<object> tempList = new List<object>(ItemsPerPage);
+
+        int start = (e.SelectedPage - 1) * ItemsPerPage;
+        int end = start + ItemsPerPage > ItemsSource.Count ? ItemsSource.Count : start + ItemsPerPage;
+        for (int i = start; i < end; i++)
+        {
+            tempList.Add(ItemsSource[i]);
+        }
+
+        ShownItems = tempList;
     }
 }

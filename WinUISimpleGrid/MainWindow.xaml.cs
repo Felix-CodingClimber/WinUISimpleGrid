@@ -75,7 +75,7 @@ public sealed partial class MainWindow : Window
 
         Random random = new Random();
         int index = 0;
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 2000; i++)
         {
             ExampleDataItem item = new ExampleDataItem()
             {
@@ -87,5 +87,10 @@ public sealed partial class MainWindow : Window
         }
 
         this.InitializeComponent();
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        
     }
 }

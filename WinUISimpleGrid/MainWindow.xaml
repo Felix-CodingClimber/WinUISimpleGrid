@@ -12,7 +12,14 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <local:DataGrid ItemsSource="{x:Bind exampleItems}">
+        <!--<StackPanel Orientation="Horizontal" Spacing="10">
+            <Button Click="Button_Click" Content="Update number of pages" />
+            <TextBox x:Name="NumberOfPages" />
+        </StackPanel>-->
+        <local:DataGrid
+            x:Name="ExampleDataGrid"
+            ItemsPerPage="100"
+            ItemsSource="{x:Bind exampleItems}">
             <local:DataGrid.ColumnDefinitions>
                 <local:DataGridColumnDefinition Title="Name" PropertyName="Name" />
                 <local:DataGridColumnDefinition Title="Nachname" PropertyName="Surname" />

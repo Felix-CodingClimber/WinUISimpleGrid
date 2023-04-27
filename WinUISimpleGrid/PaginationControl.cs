@@ -26,6 +26,7 @@ public sealed class PaginationControl : Control
     private static void OnSelectedPagePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         PaginationControl control = d as PaginationControl;
+
         control.SelectedPageChanged?.Invoke(control, new SelectedPageChangedEventArgs((int)e.NewValue));
 
         control.UpdateSelectablePages();
