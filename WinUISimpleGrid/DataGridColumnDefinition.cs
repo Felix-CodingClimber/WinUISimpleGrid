@@ -21,4 +21,13 @@ public sealed partial class DataGridColumnDefinition : DependencyObject
         get { return (string)GetValue(PropertyNameProperty); }
         set { SetValue(PropertyNameProperty, value); }
     }
+
+    public static readonly DependencyProperty CellTemplateProperty =
+        DependencyProperty.Register(nameof(CellTemplate), typeof(DataTemplate), typeof(DataGridColumnDefinition), new PropertyMetadata(0));
+
+    public DataTemplate CellTemplate
+    {
+        get { return (DataTemplate)GetValue(CellTemplateProperty); }
+        set { SetValue(CellTemplateProperty, value); }
+    }
 }
